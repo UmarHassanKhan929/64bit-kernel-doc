@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>OS Assignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" lang="en" content="ADD SITE DESCRIPTION">
+    <meta name="author" content="ADD AUTHOR INFORMATION">
+    <meta name="robots" content="index, follow">
+
+    <!-- icons -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Bootstrap Core CSS file -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Override CSS file - add your own CSS rules -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Conditional comment containing JS files for IE6 - 8 -->
+    <!--[if lt IE 9]>
+			<script src="assets/js/html5.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container-fluid">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+                <a class="navbar-brand" href="#">Articles by UHK</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="https://github.com/UmarHassanKhan929" target="_blank">Github Repository</a></li>
+                    <li><a href="https://umarhassankhan.netlify.app/">Resume</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-header">
+                    <h1>64 bit OS kernel Assignment working process</h1>
+                    <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="#">Umar Hassan Khan</a> on <span class="glyphicon glyphicon-time"></span> 14 April, 2021</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-sm-8">
+
+                <!-- Image -->
+                <figure class="margin-b-2">
+                    <img class="img-responsive" src="assets/img/os.PNG" alt="">
+                    <figcaption class="margin-t-h">Final Output</figcaption>
+                </figure>
+                <div class="well">
+                    <h2><b> Introduction</b></h2>
+                </div>
+
+                <p class="lead">Developing an OS is not easy task. Years of work have been went into creation of <b>operating systems</b> which we use today. However, tech enthsiasts must be excited to know the development cycle of OS. For learning purpose we were assigned
+                    to make 64 bit OS kernel which displays the text on screen as show in image above.</p>
+                <hr>
+
+                <h3><b>Pre Tasks</b></h3>
+                There can be 2 ways of creating this kernel depending on the operating system you use i.e. <i>Windows, Mac OS, Linux.</i>
+
+                <ul>
+                    <br>
+                    <li>For <b>Linux</b>, we can skip installing docker and download the libraries via terminal or we can go with docker procedure.</li>
+                    <li>For <b>Windows</b>, we need docker and required applications to run docker</li>
+                    <li>For <b>Mac OS</b>, we also require docker.</li>
+                </ul>
+                <p>Now since we have windows, we will follow the procedure of working in docker to make procedure of creating OS cross platform.</p>
+                <div class="well">
+                    <h4><b> IMPORTANT</b></h4>
+                    <p> There are chances that you are installing docker for the first time in life. So errors are expected to occur. Hence dont panik, stay calm and check under mentioned steps.</p>
+                    <img src="/assets/img/virtualization.jpeg" alt="" class="error">
+                    <ul>
+                        <br>
+                        <li>If this error is encountered, reboot your PC, go to settings while in bios bootup, turn virtualization "On", save the settings and launch windows.</li>
+                    </ul>
+
+                    <img src="/assets/img/wsl.jpeg" alt="" class="error">
+                    <ul>
+                        <br>
+                        <li>After successfully enabling virtualization, next error you might encountered is about <b> WSL2</b> installation. If this error is encountered, click on the given errorlink and follow the steps in <b>Microsoft</b> docs to successfully
+                            install WSL2.</li>
+                    </ul>
+                    <br>
+                    <p>Hopefully, all pre installation errors of Docker are fixed. NOw we can install DOcker</p>
+                </div>
+
+                <h3><b>Required Applications</b></h3>
+                <p>
+                    We require following applications for our development environment.
+                    <ul>
+                        <li>Docker (already installed)</li>
+                        <li>Qemu emulator</li>
+                        <li>VsCode (or any other text editor of choice)</li>
+                    </ul>
+                </p>
+
+                <h3><b>Development Process</b></h3>
+                <p>
+                    Create a folder "buildenv" and make a Docker file in it. Copy the contents in the Docker file.
+                    <div class="well">
+                        <code>
+                        <p>
+                            FROM randomdude/gcc-cross-x86_64-elf <br> RUN apt-get update <br> RUN apt-get upgrade -y <br> RUN apt-get install -y nasm <br> RUN apt-get install -y xorriso <br> RUN apt-get install -y grub-pc-bin <br> RUN apt-get install
+                            -y grub-common <br><br> VOLUME /root/env
+                            <br> WORKDIR /root/env
+                        </p>
+					</code>
+                    </div>
+                    <p>Run this command in Powershell to build docker image with required binaries. <br> <br>
+                        <code>docker build buildenv -t myos-buildenv</code> <br> <br> This will take around 10-20 minutes to build docker image. After succesfull installation of all docker binaries and creation of docker image, run the following command
+                        to launch the newly created docker image. <br> <br> <code>docker run --rm -it -v "${pwd}:/root/env" myos-buildenv</code> <br><br> now we are in the linux environment / virtual machine / docker image.
+                    </p>
+                </p>
+                <br>
+                <h4><b>Lets get to coding</b></h4>
+                <p>
+                    Now with our basic environment setup, we are ready to code our OS. We will start with 32 bit OS and shift to 64bit via long mode.
+                </p>
+                <p>For ease, we will create bunch of hierchial folders in current root location in VsCode.</p>
+                <div class="well">
+                    <ul>
+                        <li>/src
+                            <ul>
+                                <li>/interface
+                                    <ul>
+                                        <li>print.h</li>
+                                    </ul>
+                                </li>
+                                <li>/implementation
+                                    <ul>
+                                        <li>/kernel
+                                            <ul>
+                                                <li>main.c</li>
+                                            </ul>
+                                        </li>
+                                        <li>/x86_64
+                                            <ul>
+                                                <li>print.c</li>
+                                                <li>/boot
+                                                    <ul>
+                                                        <li>header.asm</li>
+                                                        <li>main.asm</li>
+                                                        <li>main64.asm</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>/targets
+                            <ul>
+                                <li>/x86_64
+                                    <ul>
+                                        <li>linker.ld</li>
+                                        <li>/iso
+                                            <ul>
+                                                <li>/boot
+                                                    <ul>
+                                                        <li>/grub
+                                                            <ul>
+                                                                <li>grub.cfg</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>.gitignore</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h5><b><i>header.asm</i></b></h5>
+                <p>
+                    This file includes data for bootloader, which locates the OS.
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/implementation/x86_64/boot/header.asm" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>main.asm</i></b></h5>
+
+                <p>
+                    This is going to be the Entry Point of our OS
+                    <p>In order for proper working, we need following things for our OS</p>
+                    <ul>
+                        <li>setting up <a href="https://www.geeksforgeeks.org/stack-implementation-in-operating-system-uses-by-processor/">stack</a> , for 64bit OS and to work with C code</li>
+                        <li>making our OS 64 bit</li>
+                    </ul>
+                    <p>This is one extensive class with following implementations</p>
+                    <ul>
+                        <li>Coding of stack</li>
+                        <li>multiple subroutines and labels including
+                            <ul>
+                                <li>check_multiboot</li>
+                                <li>.no_multiboot</li>
+                                <li>error</li>
+                                <li>check_cpuid</li>
+                                <li>.no_cpuid</li>
+                                <li>check_long_mode</li>
+                                <li>.no_long_mode</li>
+                            </ul>
+                        </li>
+                        <li>
+                            section .bss, for virtual memory and page tables
+                            <ul>
+                                <li>page_table_l4/l3/l2</li>
+                                <li>mapping physical address to virtual address in page table in setup_page_tables:(subroutine)
+                                    <ul>
+                                        <li>to successfully map all memory addresses, we will use counter till 512</li>
+                                    </ul>
+                                </li>
+                                <li>enable_paging subroutine to enable the mapping of addresses before shifting to long mode</li>
+                            </ul>
+                        </li>
+                        <li>to finally get 64 bit mode, we need global decriptor table i.e in main64.asm</li>
+                    </ul>
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/implementation/x86_64/boot/main.asm" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>main64.asm</i></b></h5>
+                <p>
+                    This file includes data for booting OS in 64bits
+                    <div class="well"><code>
+						Code can be found  <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/implementation/x86_64/boot/main64.asm" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>linker.ld</i></b></h5>
+                <p>
+                    This is going to be the linker file of our OS
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/targets/x86_64/linker.ld" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>grub.cfg</i></b></h5>
+                <p>
+                    This is our kernel bin file locator
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/targets/x86_64/iso/boot/grub/grub.cfg" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>main.c</i></b></h5>
+                <p>
+                    We will call method init in our main.asm to display result on screen in our OS
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/implementation/kernel/main.c" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>print.h </i></b></h5>
+                <p>
+                    This file will contain our methods declaration which will be used to display stuff on screen.
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/interface/print.h" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>print.c </i></b></h5>
+                <p>
+                    This file will contain our methods of print.h to print/ or display on screen. For ease, we will have fixed rows and columns to display on screen.
+                    <div class="well"><code>
+						Code can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/src/implementation/x86_64/print.c" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h5><b><i>Makefile</i></b></h5>
+                <p>
+                    Finally some bash scripts to compile our OS and generate our OS iso file.
+                    <div class="well"><code>
+						Script can be found <a href="https://github.com/UmarHassanKhan929/64bitOSkernel/blob/main/Makefile" target="_blank"> here</a>
+					</code>
+                    </div>
+                </p>
+
+                <h3><b>Final Steps</b></h3>
+                <p>
+                    Finally we run this command to compile and generate OS iso.
+                </p>
+                <div class="well"><code>make build-x86_64</code></div>
+                <p>
+                    Now exit the docker. Run this command in powershell to emulate our OS in qemu. (Condition: You didnt run into any error).
+                </p>
+                <div class="well">
+                    <code>
+					qemu-system-x86_64.exe -L "C:\Program Files\qemu" -cdrom dist/x86_64/kernel.iso
+					</code>
+                </div>
+
+                <h4><b>Errors</b></h4>
+                <p>
+                    If you run into any errors, dont panic, we will guide you through some of most common errors.
+                </p>
+                <div class="well">
+                    <ul>
+                        <li>Docker not running in backgroud. Fix: <i>Run docker again</i></li>
+                        <li>Docker could build image in vsCode terminal. Fix: <i>Run DOcker and VsCode as administrator</i></li>
+                        <li>make *** No rule to make target. Fix: <i>make sure name of files are correct and corresponding to your makefile script commands, do recheck linker.ld file and make sure no syntax or semantic error exist in makefile.</i></li>
+                        <li>Qemu could find 256k bios. Fix: <i>Add qemu path in environment variables of system and restart</i></li>
+                    </ul>
+                </div>
+
+                <p> <b>Congrats, </b> We just built your own 64 bit OS kernel from scratch. Heres the whole source <a href="https://github.com/UmarHassanKhan929/64bitOSkernel" target="_blank">code</a> </p>
+
+
+            </div>
+            <div class="col-sm-4">
+                <!-- Search -->
+                <div class="well">
+                    <h4 class="margin-t-0">Search</h4>
+                    <form action="https://en.wikipedia.org/wiki/">
+                        <div class="input-group">
+                            <label class="sr-only" for="search-form">Search the site</label>
+                            <input type="text" class="form-control" id="search-form" name="">
+                            <span class="input-group-btn">
+									<button class="btn btn-default" type="button">
+										<span class="glyphicon glyphicon-search"></span>
+                            <span class="sr-only">Search</span>
+                            </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+
+
+
+                <!-- Panel -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><b> Table of Contents</b></h4>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="">Introduction</a></li>
+                            <li>
+                                <a href="">Pre Tasks</a>
+                            </li>
+                            <li>
+                                <a href="">Required Applications</a>
+                            </li>
+                            <li>
+                                <a href=""> Development Process</a>
+                            </li>
+                            <li>
+                                <a href=""> Coding</a>
+                            </li>
+                            <li>
+                                <a href=""> Finalizing</a>
+                            </li>
+                            <li>
+                                <a href=""> Expected Errors</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Panel -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a rel="noopener" href="/java-libraries-to-increase-your-productivity-79093535a371?source=post_internal_links---------0----------------------------">Java Libraries to increase your productivity</a></h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Java has a large community that has created many libraries that help you increase your productivity by removing the need to write boilerplate code or providing utilities for common java problems. In this article, we will explore
+                            some of those libraries.</p>
+                    </div>
+                </div>
+
+                <!-- Panel -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a rel="noopener" href="/armv9-what-is-the-big-deal-4528f20f78f3?source=post_internal_links---------1----------------------------">ARMv9 What is the Big Deal</a></h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>What is a Scalable Vector Extension? What does it mean to the industry and users? What is behind the jargon?</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a rel="noopener" href="/create-your-app-with-flutter-in-5-days-412ee41de22a?source=post_internal_links---------5----------------------------">Create Your App With Flutter In 5 Days</a>
+                        </h4>
+
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            From Twitter recommendations to app development recommended videos, Flutter has become a buzzword all over the internet. Undoubtedly, long listed features of Flutter have already taken the world by storm, but how to get started with the Flutter app in
+                            5 days is the central question.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.row -->
+        <hr>
+        <div>
+            <p>
+                Written by <b> Umar Hassan Khan</b>, cms: <b>288929</b>, section: <b>BSCS-9-B</b>
+            </p>
+        </div>
+        <hr>
+        <footer class="margin-tb-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Sitename 2015</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- JQuery scripts -->
+    <script src="assets/js/jquery-1.11.2.min.js"></script>
+
+    <!-- Bootstrap Core scripts -->
+    <script src="assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>
